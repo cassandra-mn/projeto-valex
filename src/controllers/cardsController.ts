@@ -4,11 +4,6 @@ import * as cardsService from '../services/cardsService.js';
 
 export async function createCard(req: Request, res: Response) {
     const {type, id}: {type: any, id: number} = req.body;
-
-    cardsService.validateType(type);
-    cardsService.validateEmployee(id);
-    cardsService.validateTypeByEmployee(type, id);
-    cardsService.createCard(id);
-
-    res.sendStatus(201);
+    const response = await cardsService.createCard(type, id);
+    res.status(201).send(response);
 }
