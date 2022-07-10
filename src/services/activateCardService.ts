@@ -40,4 +40,24 @@ export async function activateCard(id: number, cvc: string, password: string) {
     await validateActivation(card);
     await validateCvc(card, cvc);
     validatePassword(password);
+
+    const encryptedPassword = cryptr.encrypt(password);
+    const {employeeId, number, cardholderName, securityCode, expirationDate, isVirtual, originalCardId, type} = card;
+
+    const cardData = {
+        id,
+        employeeId,
+        number,
+        cardholderName,
+        securityCode,
+        expirationDate,
+        password: encryptedPassword,
+        isVirtual,
+        originalCardId,
+        isBlocked: false,
+        type
+    }
+
+    await cards.update(id, cardData);
+    return cardData;
 }

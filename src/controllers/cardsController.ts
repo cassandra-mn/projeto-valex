@@ -11,6 +11,6 @@ export async function createCard(req: Request, res: Response) {
 
 export async function activateCard(req: Request, res: Response) {
     const {id, cvc, password}: {id: number, cvc: string, password: string} = req.body;
-    await activateCardService.activateCard(id, cvc, password);
-    res.sendStatus(200);
+    const response = await activateCardService.activateCard(id, cvc, password);
+    res.status(200).send(response);
 }
