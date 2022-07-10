@@ -1,10 +1,21 @@
-import * as card from '../repositories/cardRepository.js';
+import dayjs from 'dayjs';
+
+import * as cards from '../repositories/cardRepository.js';
 
 export async function validateRegistration(id: number) {
-    const isRegistered = await card.findById(id);
-    if (!isRegistered) throw {status: 404}
+    const card = await cards.findById(id);
+    if (!card) throw {status: 404};
+    return card;
+}
+
+export async function validateExpiration(card: any) {
+    const {expirationDate} = card;
+    const today = dayjs(new Date()).format('MM/YY');
+    const isExpired = dayjs(expirationDate).isBefore(dayjs(today));
+    if (isExpired) throw {status: 422};
 }
 
 export async function activateCard(id: number, cvc: string, password: string) {
-    await validateRegistration(id);
+    const card = await validateRegistration(id);
+    await validateExpiration(card);
 }
