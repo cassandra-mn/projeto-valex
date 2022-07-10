@@ -8,6 +8,7 @@ export async function createCard(req: Request, res: Response) {
     cardsService.validateType(type);
     cardsService.validateEmployee(id);
     cardsService.validateTypeByEmployee(type, id);
-    
+    cardsService.createCard(id);
+
     res.sendStatus(201);
 }
