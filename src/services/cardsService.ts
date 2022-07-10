@@ -35,7 +35,7 @@ export async function getCardData(type: any, id: number) {
     const cardHolderName = fullName.split(' ').map((name: string, index: number) => {
         if (index === 0 || index === fullName.split(' ').length - 1) return name;
         if (name.length > 2) return name.slice(0,1);
-    }).toString().replace(',,', ' ').replace(',', ' ');
+    }).toString().replace(/,/g, ' ').replace('  ', ' ');
 
     return {
         employeeId: id,
@@ -45,7 +45,7 @@ export async function getCardData(type: any, id: number) {
         expirationDate,
         password: null,
         isVirtual: false,
-        originalCardId: id,
+        originalCardId: null,
         isBlocked: true,
         type
     }
