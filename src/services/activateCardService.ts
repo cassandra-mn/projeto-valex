@@ -15,7 +15,13 @@ export async function validateExpiration(card: any) {
     if (isExpired) throw {status: 422};
 }
 
+export async function validateActivation(card: any) {
+    const {password} = card;
+    if (password) throw {status: 409};
+}
+
 export async function activateCard(id: number, cvc: string, password: string) {
     const card = await validateRegistration(id);
     await validateExpiration(card);
+    await validateActivation(card);
 }
