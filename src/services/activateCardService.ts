@@ -25,6 +25,7 @@ export function validateActivation(card: any) {
 
 export function validateCvc(card: any, cvc: string) {
     const {securityCode} = card;
+    console.log(cryptr.decrypt(securityCode))
     const isValid = cryptr.decrypt(securityCode) === cvc;
     if (!isValid) throw {status: 422};
 }
@@ -42,6 +43,7 @@ export async function activateCard(id: number, cvc: string, password: string) {
     validatePassword(password);
 
     const encryptedPassword = cryptr.encrypt(password);
+    console.log(encryptedPassword)
     const {employeeId, number, cardholderName, securityCode, expirationDate, isVirtual, originalCardId, type} = card;
 
     const cardData = {

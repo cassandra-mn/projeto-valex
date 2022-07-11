@@ -18,7 +18,7 @@ export async function blockCard(id: number, password: string) {
     const card = await cardService.validateRegistration(id);
     cardService.validateExpiration(card);
     validateLock(card);
-    //validatePassword(card, password);
+    validatePassword(card, password);
 
     const {employeeId, number, cardholderName, securityCode, expirationDate, isVirtual, originalCardId, type} = card;
 
@@ -29,7 +29,7 @@ export async function blockCard(id: number, password: string) {
         cardholderName,
         securityCode,
         expirationDate,
-        password,
+        password: card.password,
         isVirtual,
         originalCardId,
         isBlocked: true,

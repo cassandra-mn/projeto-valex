@@ -23,7 +23,7 @@ export async function payment(cardId: number, password: string, businessId: numb
     validateActivation(card);
     validateExpiration(card);
     validateLock(card);
-    //validatePassword(card, password);
+    validatePassword(card, password);
 
     const business = await validateBusinessRegistration(businessId);
     validateType(card, business);
