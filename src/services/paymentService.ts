@@ -3,6 +3,7 @@ import * as paymentRepository from '../repositories/paymentRepository.js';
 import {validateRegistration, validateExpiration} from './activateCardService.js';
 import {validateActivation} from './rechargeCardService.js';
 import {validateLock, validatePassword} from './blockCardService.js';
+import {viewTransactions} from './viewTransactionsService.js';
 
 export async function validateBusinessRegistration(id: number) {
     const business = await businessRepository.findById(id);
@@ -27,6 +28,9 @@ export async function payment(cardId: number, password: string, businessId: numb
     const business = await validateBusinessRegistration(businessId);
     validateType(card, business);
     
+    const {balance} = await viewTransactions(cardId);
+    if (balance < amount) throw {status: 422};
+
     const payment = {
         cardId,
         businessId,
