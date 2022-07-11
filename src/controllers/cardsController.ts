@@ -3,6 +3,7 @@ import {Request, Response} from 'express';
 import * as createCardService from '../services/createCardService.js';
 import * as activateCardService from '../services/activateCardService.js';
 import * as blockCardService from '../services/blockCardService.js';
+import * as unlockCardService from '../services/unlockCardService.js';
 
 export async function createCard(req: Request, res: Response) {
     const {type, id}: {type: any, id: number} = req.body;
@@ -19,5 +20,11 @@ export async function activateCard(req: Request, res: Response) {
 export async function blockCard(req: Request, res: Response) {
     const {id, password}: {id: number, password: string} = req.body;
     const response = await blockCardService.blockCard(id, password);
+    res.status(200).send(response);
+}
+
+export async function unlockCard(req: Request, res: Response) {
+    const {id, password}: {id: number, password: string} = req.body;
+    const response = await unlockCardService.unlockCard(id, password);
     res.status(200).send(response);
 }
