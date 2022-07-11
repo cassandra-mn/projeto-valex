@@ -5,6 +5,7 @@ import * as activateCardService from '../services/activateCardService.js';
 import * as blockCardService from '../services/blockCardService.js';
 import * as unlockCardService from '../services/unlockCardService.js';
 import * as rechargeCardService from '../services/rechargeCardService.js';
+import * as paymentService from '../services/paymentService.js';
 
 export async function createCard(req: Request, res: Response) {
     const {type, id}: {type: any, id: number} = req.body;
@@ -33,5 +34,11 @@ export async function unlockCard(req: Request, res: Response) {
 export async function rechargeCard(req: Request, res: Response) {
     const {id, amount}: {id: number, amount: number} = req.body;
     const response = await rechargeCardService.rechargeCard(id, amount);
+    res.status(200).send(response);
+}
+
+export async function payment(req: Request, res: Response) {
+    const {cardId, password, businessId, amount}: {cardId: number, password: string, businessId: number, amount: number} = req.body;
+    const response = await paymentService.payment(cardId, password, businessId, amount);
     res.status(200).send(response);
 }
