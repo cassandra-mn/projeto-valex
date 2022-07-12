@@ -12,7 +12,7 @@ export async function paymentPos(cardId: number, password: string, businessId: n
 
     const business = await cardService.validateBusinessRegistration(businessId);
     cardService.validateTypeTransaction(card, business);
-    cardService.verifyBalance(cardId, amount);
+    await cardService.verifyBalance(cardId, amount);
 
     const payment = {
         cardId,

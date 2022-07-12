@@ -26,7 +26,6 @@ export function validatePassword(card: any, password: string) {
 
 export function validateCvc(card: any, cvc: string) {
     const {securityCode} = card;
-    console.log(cryptr.decrypt(securityCode))
     const isValid = cryptr.decrypt(securityCode) === cvc;
     if (!isValid) throw {status: 422};
 }

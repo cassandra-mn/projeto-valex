@@ -9,6 +9,13 @@ import * as viewTransactionsService from '../services/viewTransactionsService.js
 import * as paymentPosService from '../services/paymentPosService.js';
 import * as paymentOnlineService from '../services/paymentOnlineSerice.js';
 
+export interface CardInformation {
+    number: string;
+    cardholderName: string;
+    securityCode: string;
+    expirationDate: string;
+}
+
 export async function createCard(req: Request, res: Response) {
     const {type, id}: {type: any, id: number} = req.body;
     const response = await createCardService.createCard(type, id);
@@ -52,7 +59,7 @@ export async function paymentPos(req: Request, res: Response) {
 }
 
 export async function paymentOnline(req: Request, res: Response) {
-    const {cardId, password, businessId, amount}: {cardId: number, password: string, businessId: number, amount: number} = req.body;
-    const response = await paymentOnlineService.paymentOnline(cardId, password, businessId, amount);
+    const {card, businessId, amount}: {card: CardInformation, businessId: number, amount: number} = req.body;
+    const response = await paymentOnlineService.paymentOnline(card, businessId, amount);
     res.status(200).send(response);
 }
