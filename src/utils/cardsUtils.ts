@@ -3,6 +3,8 @@ import Cryptr from 'cryptr';
 const cryptr = new Cryptr('secret');
 
 import * as cards from '../repositories/cardRepository.js';
+import * as business from '../repositories/businessRepository.js';
+import {viewTransactions} from '../services/viewTransactionsService.js';
 
 export async function validateRegistration(id: number) {
     const card = await cards.findById(id);
@@ -47,4 +49,20 @@ export function validateLock(card: any) {
 export function validateUnlock(card: any) {
     const {isBlocked} = card;
     if (isBlocked) throw {status: 422};
+}
+
+export async function validateBusinessRegistration(id: number) {
+    const isRegistered = await business.findById(id);
+    if (!isRegistered) throw {status: 404};
+    return isRegistered;
+}
+
+export function validateTypeTransaction(card: any, business: any) {
+    const isValid = card.type === business.type;
+    if (!isValid) throw {status: 422};
+}
+
+export async function verifyBalance(cardId: number, amount: number) {
+    const {balance} = await viewTransactions(cardId);
+    if (balance < amount) throw {status: 422};
 }
