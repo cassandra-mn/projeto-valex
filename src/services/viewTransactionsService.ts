@@ -1,9 +1,9 @@
 import * as payment from '../repositories/paymentRepository.js';
 import * as recharge from '../repositories/rechargeRepository.js';
-import {validateRegistration} from './activateCardService.js';
+import * as cardService from '../utils/cardsUtils.js';
 
 export async function viewTransactions(id: number) {
-    validateRegistration(id);
+    cardService.validateRegistration(id);
 
     const transactions = await payment.findByCardId(id);
     const recharges = await recharge.findByCardId(id);

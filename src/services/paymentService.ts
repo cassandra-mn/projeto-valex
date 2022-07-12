@@ -1,8 +1,6 @@
 import * as businessRepository from '../repositories/businessRepository.js';
 import * as paymentRepository from '../repositories/paymentRepository.js';
-import {validateRegistration, validateExpiration} from './activateCardService.js';
-import {validateActivation} from './rechargeCardService.js';
-import {validateLock, validatePassword} from './blockCardService.js';
+import * as cardService from '../utils/cardsUtils.js';
 import {viewTransactions} from './viewTransactionsService.js';
 
 export async function validateBusinessRegistration(id: number) {
@@ -19,11 +17,11 @@ export function validateType(card: any, business: any) {
 export async function payment(cardId: number, password: string, businessId: number, amount: number) {
     if (amount <= 0) throw {status: 422};
     
-    const card = await validateRegistration(cardId);
-    validateActivation(card);
-    validateExpiration(card);
-    validateLock(card);
-    validatePassword(card, password);
+    const card = await cardService.validateRegistration(cardId);
+    cardService.validateActivation(card);
+    cardService.validateExpiration(card);
+    cardService.validateUnlock(card);
+    cardService.validatePassword(card, password);
 
     const business = await validateBusinessRegistration(businessId);
     validateType(card, business);
